@@ -12,3 +12,14 @@ class ContaSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+class ContaSchemaUpdate(BaseModel):
+    
+    nome_proprietario: Optional[str]
+    dt_nasc_proprietario: Optional[date]
+    email: Optional[str]
+    senha: Optional[str]
+    telefone: Optional[int]
+
+    class Config:
+        orm_mode = True
