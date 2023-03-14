@@ -1,5 +1,5 @@
 from models.conta_model import Conta
-from schemas.conta_schema import ContaSchema
+from schemas.conta_schema import ContaSchema, ContaSchemaUpdate
 
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
@@ -65,3 +65,45 @@ class ContaRepo:
             "msg":f'A conta do {nome_proprietario} foi deletada com succeso'
         }
         
+    @staticmethod
+    def get_one(cpf:int, db:Session):
+        try:
+            conta_cpf = db.query(Conta).filter(Conta.cpf_proprietario==cpf).first()
+           
+        except Exception as err:
+            raise HTTPException(
+                detail=err,
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
+        if not conta_cpf:
+            raise HTTPException(
+                detail=f'A conta com cpf:{cpf} não foi encontrada',
+                status_code=status.HTTP_404_NOT_FOUND
+            )
+        return conta_cpf
+    
+    
+    @staticmethod
+    def update(cpf:int, dados_conta: ContaSchemaUpdate, db: Session):
+        
+        try:
+            conta_a_atualizar = db.query(Conta).filter(Conta.cpf_proprietario == cpf).first()
+            dados_conta_dic = dados_conta.dict()
+            for key in dados_conta_dic:
+                if dados_conta_dic[key] is not None:
+                    setattr(conta_a_atualizar, key, dados_conta_dic[key])
+            db.commit()       
+        
+        except Exception as err:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"A conta não : {cpf} não se atualizou"
+            )
+            
+        if not conta_a_atualizar:
+            raise HTTPException(
+                status_code=404,
+                detail="Conta não encontrada"
+            )
+        
+        return conta_a_atualizar
