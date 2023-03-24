@@ -23,7 +23,7 @@ def deletar_conta(cpf: int, db=Depends(get_session)):
 
 @router.get("/{cpf}", response_model=ContaSchema)
 def obter_conta_cpf(cpf: int, db=Depends(get_session)):
-    return repo.get_one(cpf, db)
+    return repo.get_by_cpf(cpf, db)
 
 @router.put("/{cpf}", response_model=ContaSchema)
 def atulizar_conta(cpf:int, dados_conta: ContaSchemaUpdate, db=Depends(get_session)):

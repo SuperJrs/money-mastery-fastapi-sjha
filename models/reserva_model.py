@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, CheckConstraint, Column, Date, DateTime, Enum, ForeignKeyConstraint, Numeric, PrimaryKeyConstraint, String, UniqueConstraint
+from sqlalchemy import BigInteger, text, Column, Date, Integer, ForeignKeyConstraint, PrimaryKeyConstraint, String
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -12,12 +12,12 @@ class Reserva(Base):
         PrimaryKeyConstraint('id_reserva', name='reserva_pk')
     )
 
-    id_reserva = Column(BigInteger)
+    id_reserva = Column(Integer, primary_key=True, server_default=text("nextval('reserva_id_reserva_seq'::regclass)"))
     dt_criacao = Column(Date, nullable=False)
     titulo_reserva = Column(String(30), nullable=False)
     cpf_proprietario = Column(BigInteger, nullable=False)
     descricao_reserva = Column(String(100))
 
-    conta = relationship('Conta', back_populates='reserva')
-    saida = relationship('Saida', back_populates='reserva')
-    entrada = relationship('Entrada', back_populates='reserva')
+    # conta = relationship('Conta', back_populates='reserva')
+    # saida = relationship('Saida', back_populates='reserva')
+    # entrada = relationship('Entrada', back_populates='reserva')

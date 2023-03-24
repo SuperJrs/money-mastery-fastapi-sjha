@@ -1,9 +1,11 @@
 from fastapi import FastAPI
-from controllers.conta import router
+from controllers.conta import router as router_conta
+from controllers.meta import router as router_meta
 
 app = FastAPI()
 
-app.include_router(router)
+app.include_router(router_conta)
+app.include_router(router_meta)
 
 if __name__ == '__main__':
     import uvicorn
