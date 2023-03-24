@@ -66,7 +66,7 @@ class ContaRepo:
         }
         
     @staticmethod
-    def get_one(cpf:int, db:Session):
+    def get_by_cpf(cpf:int, db:Session):
         try:
             conta_cpf = db.query(Conta).filter(Conta.cpf_proprietario==cpf).first()
            

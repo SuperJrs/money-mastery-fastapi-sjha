@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, CheckConstraint, Column, Date, DateTime, Enum, ForeignKeyConstraint, Numeric, PrimaryKeyConstraint, String, UniqueConstraint
+from sqlalchemy import BigInteger, text, Column, Date, Integer, Enum, ForeignKeyConstraint, Numeric, PrimaryKeyConstraint, String, UniqueConstraint
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -14,7 +14,7 @@ class Entrada(Base):
         PrimaryKeyConstraint('id_entrada', name='entrada_pk')
     )
 
-    id_entrada = Column(BigInteger)
+    id_entrada = Column(Integer, primary_key=True, server_default=text("nextval('entrada_id_entrada_seq'::regclass)"))
     valor_entrada = Column(Numeric(9, 2), nullable=False)
     origem = Column(Enum('PIX', 'SALARIO', 'EMPRESTIMO', 'RESERVA', 'OUTRO', name='origem'), nullable=False)
     dt_hora_entrada = Column(Date, nullable=False)
@@ -23,6 +23,6 @@ class Entrada(Base):
     id_reserva = Column(BigInteger)
     id_emprestimo = Column(BigInteger)
 
-    conta = relationship('Conta', back_populates='entrada')
-    emprestimo = relationship('Emprestimo', back_populates='entrada')
-    reserva = relationship('Reserva', back_populates='entrada')
+    # conta = relationship('Conta', back_populates='entrada')
+    # emprestimo = relationship('Emprestimo', back_populates='entrada')
+    # reserva = relationship('Reserva', back_populates='entrada')

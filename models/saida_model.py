@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, CheckConstraint, Column, Date, DateTime, Enum, ForeignKeyConstraint, Numeric, PrimaryKeyConstraint, String, UniqueConstraint
+from sqlalchemy import BigInteger, Integer, Column, text, DateTime, Enum, ForeignKeyConstraint, Numeric, PrimaryKeyConstraint, String
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -13,7 +13,7 @@ class Saida(Base):
         PrimaryKeyConstraint('id_saida', name='saida_pk')
     )
 
-    id_saida = Column(BigInteger)
+    id_saida = Column(Integer, primary_key=True, server_default=text("nextval('meta_id_meta_seq'::regclass)"))
     valor_saida = Column(Numeric(9, 2), nullable=False)
     categoria = Column(Enum('LAZER', 'ALIMENTACAO', 'SAUDE', 'MORADIA', 'TRANSPORTE', 'EDUCACAO', 'OUTRO', name='categoria'), nullable=False)
     forma_pagamento = Column(Enum('CREDITO', 'DEBITO', 'PIX', 'DINHEIRO', 'RESERVA', 'EMPRESTIMO', name='forma_pagamento'), nullable=False)
@@ -22,6 +22,6 @@ class Saida(Base):
     descricao_saida = Column(String(100))
     id_reserva = Column(BigInteger)
 
-    conta = relationship('Conta', back_populates='saida')
-    reserva = relationship('Reserva', back_populates='saida')
-    emprestimo = relationship('Emprestimo', back_populates='saida')
+    # conta = relationship('Conta', back_populates='saida')
+    # reserva = relationship('Reserva', back_populates='saida')
+    # emprestimo = relationship('Emprestimo', back_populates='saida')
